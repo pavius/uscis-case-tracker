@@ -2479,6 +2479,11 @@ function toETRounded(iso) {
   const h = new Intl.DateTimeFormat("en-US", {timeZone: TZ, hour: '2-digit', hour12: false}).format(d);
   return {text: t, dateKey, hour: +h};
 }
+function dateFromKey(dateKey){
+  const [year, month, day] = String(dateKey).split('-');
+  const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  return `${months[Number(month) - 1]} ${Number(day)}, ${year}`;
+}
 
 // Generate Reddit markdown for timeline
 function generateTimelineMarkdown() {
@@ -2494,11 +2499,7 @@ function generateTimelineMarkdown() {
     // Add date header if it's a new date
     if (currentDate !== it.et.dateKey) {
       currentDate = it.et.dateKey;
-      text += `\n**${new Date(currentDate).toLocaleDateString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric"
-      })}**\n`;
+      text += `\n**${dateFromKey(currentDate)}**\n`;
     }
 
     // Clean up the label
@@ -3144,7 +3145,7 @@ function renderTimeline(){
   items.forEach(it=>{if(!groups[it.et.dateKey]) groups[it.et.dateKey]=[];groups[it.et.dateKey].push(it)});
   Object.keys(groups).sort((a,b)=>new Date(b)-new Date(a)).forEach(date=>{
     const g=document.createElement("div");g.className="tgroup";
-    const d=document.createElement("div");d.className="tdate";d.textContent=new Date(date).toLocaleDateString("en-US",{month:"long",day:"numeric",year:"numeric"});g.appendChild(d);
+    const d=document.createElement("div");d.className="tdate";d.textContent=dateFromKey(date);g.appendChild(d);
     groups[date].forEach(it=>{
       const t=document.createElement("div");t.className="titem";
       // Extract event code if this is an event
