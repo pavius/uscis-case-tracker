@@ -2494,6 +2494,8 @@ function generateTimelineMarkdown() {
 
   let text = "**USCIS Timeline**\n\n";
   let currentDate = null;
+  const cases = loadCases();
+  const aliases = loadApplicantAliases();
 
   items.forEach(it => {
     // Add date header if it's a new date
@@ -2507,6 +2509,11 @@ function generateTimelineMarkdown() {
       .replace(/closed=true/g, "Case completed ✨")
       .replace(/closed=false/g, "")
       .replace(/undefined/g, "");
+
+    const person = applicantIdentity(cases[it.caseContext.receiptNumber], aliases).displayName;
+    if (person && person !== 'Unidentified applicant') {
+      label = `${person} · ${label}`;
+    }
 
     // Mask any receipt numbers in the label
     const receiptPattern = /[A-Z]{3}[0-9]{10}/g;
