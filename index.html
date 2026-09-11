@@ -972,8 +972,8 @@
     .case-card-form {
       font-size: 0.75rem;
       font-weight: 600;
-      color: var(--text-light);
-      background: var(--bg);
+      color: var(--accent);
+      background: var(--accent-light);
       padding: var(--space-xs) var(--space-sm);
       border-radius: var(--radius-full);
     }
@@ -1730,6 +1730,19 @@
       height: 1px;
       overflow: hidden;
     }
+    .case-card-badges { display: flex; align-items: center; gap: var(--space-xs); }
+    .case-card-header { flex-wrap: wrap; gap: var(--space-sm); }
+    .timeline-pill {
+      display: inline-flex;
+      padding: var(--space-xs) var(--space-sm);
+      border-radius: var(--radius-full);
+      background: var(--accent-light);
+      color: var(--accent);
+      font-size: 0.75rem;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+    .chip span, .quick-link { overflow-wrap: anywhere; }
   </style>
 </head>
 <body itemscope itemtype="https://schema.org/WebApplication">
@@ -2060,6 +2073,44 @@ function saveReceipts(r){localStorage.setItem("receipts",JSON.stringify(r))}
 function loadCases(){return JSON.parse(localStorage.getItem("cases")||"{}")}
 function saveCases(c){localStorage.setItem("cases",JSON.stringify(c))}
 
+// Applicant labels are independent of case history and never included in exports.
+function normalizeApplicantName(name) {
+  return typeof name === 'string' ? name.trim().replace(/\s+/g, ' ').toUpperCase() : '';
+}
+
+function applicantFirstName(name) {
+  const givenNames = name.includes(',') ? name.slice(name.indexOf(',') + 1) : name;
+  const firstName = givenNames.trim().split(/\s+/)[0];
+  if (!firstName) return 'Unidentified applicant';
+  return firstName === firstName.toUpperCase()
+    ? firstName.toLowerCase().replace(/(^|[-’'])[\p{L}]/gu, part => part.toUpperCase())
+    : firstName;
+}
+
+function loadApplicantAliases() {
+  const aliases = JSON.parse(localStorage.getItem('applicantAliases') || '{}');
+  return aliases && typeof aliases === 'object' && !Array.isArray(aliases) ? aliases : {};
+}
+
+function applicantIdentity(caseData, aliases = loadApplicantAliases()) {
+  const history = caseData?.history || [];
+  for (let i = history.length - 1; i >= 0; i--) {
+    const name = history[i].data?.applicantName;
+    const key = normalizeApplicantName(name);
+    if (!key) continue;
+    const alias = Object.hasOwn(aliases, key) ? aliases[key] : null;
+    const displayName = typeof alias?.displayName === 'string' ? alias.displayName.trim() : '';
+    return { key, name: name.trim(), displayName: displayName || applicantFirstName(name) };
+  }
+  return { key: '', name: '', displayName: 'Unidentified applicant' };
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, character => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[character]));
+}
+
 // Validate receipt number format
 function isValidReceipt(receipt) {
   return /^[A-Z]{3}[0-9]{10}$/.test(receipt);
@@ -2187,14 +2238,20 @@ function renderReceipts() {
   cont.innerHTML = "";
   collapsedCont.innerHTML = "";
 
+  const cases = loadCases();
+  const aliases = loadApplicantAliases();
   loadReceipts().forEach(r => {
+    const person = applicantIdentity(cases[r], aliases);
+    const history = cases[r]?.history || [];
+    const formType = history[history.length - 1]?.data?.formType;
+    const receiptLabel = [person.displayName, formType, r].filter(Boolean).join(' · ');
     // Render for expanded view
     const chip = document.createElement("div");
     chip.className = "chip";
     chip.setAttribute("role", "listitem");
 
     const text = document.createElement("span");
-    text.textContent = r;
+    text.textContent = receiptLabel;
     chip.appendChild(text);
 
     const deleteBtn = document.createElement("button");
@@ -2226,7 +2283,7 @@ function renderReceipts() {
         <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
         <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
       </svg>
-      ${r}
+      ${escapeHTML(receiptLabel)}
     `;
     collapsedCont.appendChild(collapsedChip);
   });
@@ -2617,6 +2674,7 @@ function clearAllData() {
   localStorage.removeItem("receipts");
   localStorage.removeItem("cases");
   localStorage.removeItem("collapsedSections");
+  localStorage.removeItem("applicantAliases");
 
   renderReceipts();
   renderTimeline();
@@ -2792,6 +2850,7 @@ document.getElementById("saveJsonBtn").onclick = () => {
     data: data.data
   });
   saveCases(cases);
+  renderReceipts();
   renderTimeline();
   updateProgress();
 
@@ -3014,7 +3073,10 @@ function renderCaseSummary() {
     card.innerHTML = `
       <div class="case-card-header">
         <div class="case-card-receipt">${data.receiptNumber}</div>
-        <div class="case-card-form">${data.formType || 'N/A'}</div>
+        <div class="case-card-badges">
+          <span class="case-card-form">${escapeHTML(applicantIdentity(caseData).displayName)}</span>
+          <span class="case-card-form">${data.formType || 'N/A'}</span>
+        </div>
       </div>
       <div class="case-card-status">
         ${isCompleted ?
@@ -3049,9 +3111,7 @@ function renderCaseSummary() {
 // render timeline
 function renderTimeline(){
   const items=buildTimeline();
-  const cont=document.getElementById("timeline");
   const timelineContainer=document.getElementById("timelineContainer");
-  cont.innerHTML="";
 
   // Render case summary cards
   renderCaseSummary();
@@ -3076,6 +3136,10 @@ function renderTimeline(){
     timelineContainer.innerHTML = '<div id="timeline" class="timeline" role="feed" aria-label="Case updates timeline"></div>';
   }
 
+  const cont = document.getElementById('timeline');
+  cont.innerHTML = '';
+  const cases = loadCases();
+  const aliases = loadApplicantAliases();
   const groups={};
   items.forEach(it=>{if(!groups[it.et.dateKey]) groups[it.et.dateKey]=[];groups[it.et.dateKey].push(it)});
   Object.keys(groups).sort((a,b)=>new Date(b)-new Date(a)).forEach(date=>{
@@ -3095,13 +3159,19 @@ function renderTimeline(){
 
       // Check if this is a closed status update
       const isClosed = it.label.includes('closed=true');
+      const formType = it.caseContext.data.formType;
+      const formPrefix = `${formType} `;
+      const eventLabel = (it.label.startsWith(formPrefix) ? it.label.slice(formPrefix.length) : it.label)
+        .replace('closed=true', 'Case completed ✨').replace('closed=false', '').trim();
 
       t.innerHTML = `
         <div class="titem-content">
           <div>
             <div class="titem-time">${it.et.text}</div>
             <div class="titem-main">
-              <span class="titem-label">${it.label.replace('closed=true', 'Case completed ✨').replace('closed=false', '')}</span>
+              <span class="timeline-pill">${escapeHTML(applicantIdentity(cases[it.caseContext.receiptNumber], aliases).displayName)}</span>
+              <span class="timeline-pill">${escapeHTML(formType || 'N/A')}</span>
+              ${eventLabel ? `<span class="titem-label">${escapeHTML(eventLabel)}</span>` : ''}
               ${businessHours ? '<span class="flag officer">👋 Officer</span>' : '<span class="flag system">⚙️ System</span>'}
               ${isClosed ? '<span class="flag completed">🎉 Complete</span>' : ''}
             </div>
