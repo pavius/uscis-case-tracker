@@ -1757,44 +1757,6 @@
 </header>
 
 <main>
-  <section id="aboutSection" class="card collapsible" aria-labelledby="about-title">
-    <div class="card-header" onclick="toggleCollapse('aboutSection')">
-      <h2 id="about-title">Getting Started</h2>
-      <svg class="collapse-icon icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-      </svg>
-    </div>
-    <div class="collapsed-content">
-      <a href="https://myaccount.uscis.gov/sign-in" target="_blank" rel="noopener" class="quick-link">
-        <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
-          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
-        </svg>
-        Login to USCIS
-      </a>
-    </div>
-    <div class="card-body">
-      <div class="helper-callout">
-        <svg class="helper-callout-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
-        </svg>
-        <div class="helper-callout-content">
-          <div class="helper-callout-title">100% Privacy-Focused Tracker</div>
-          <div class="helper-callout-text">
-            Your data never leaves your browser. All case information is stored locally and no data is sent to any server.
-          </div>
-        </div>
-      </div>
-      <ol>
-        <li>First, log in to <a href="https://myaccount.uscis.gov/sign-in" target="_blank" rel="noopener">myaccount.uscis.gov</a> in a separate tab</li>
-        <li>Add your USCIS receipt numbers below (e.g., IOE1234567890)</li>
-        <li>Click "Open API tabs" to open official USCIS JSON endpoints</li>
-        <li>Copy the raw JSON from each tab and paste it into Step 2</li>
-        <li>Your timeline will update automatically with each snapshot</li>
-      </ol>
-    </div>
-  </section>
-
   <section id="receiptsSection" class="card collapsible" aria-labelledby="receipts-title">
     <div class="card-header" onclick="toggleCollapse('receiptsSection')">
       <div class="step-header">
@@ -1806,13 +1768,6 @@
       </svg>
     </div>
     <div class="collapsed-content">
-      <button onclick="openAllApiTabs()" class="quick-link" style="border: none; cursor: pointer;">
-        <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
-          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
-        </svg>
-        Open All API tabs
-      </button>
       <div id="receiptChipsCollapsed" style="display: flex; flex-wrap: wrap; gap: var(--space-sm);" role="list" aria-label="Receipt numbers with individual API links"></div>
     </div>
     <div class="card-body">
@@ -1845,13 +1800,7 @@
           </svg>
           Add Receipt
         </button>
-        <button id="openTabsBtn" aria-label="Open API tabs for all receipt numbers" disabled>
-          <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"/>
-            <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"/>
-          </svg>
-          Open API tabs
-        </button>
+        <div id="personApiButtons" class="button-group"></div>
       </div>
       <div id="receiptChips" class="chip-container" role="list" aria-label="Added receipt numbers"></div>
     </div>
@@ -1870,7 +1819,7 @@
         <div class="helper-callout-title">How to get your case data</div>
         <ol>
           <li>Make sure you're logged into <a href="https://myaccount.uscis.gov/sign-in" target="_blank" rel="noopener">myaccount.uscis.gov</a></li>
-          <li>Click "Open API tabs" above to open the official USCIS JSON endpoints</li>
+          <li>Click a person’s “Open all” button above to open the official USCIS JSON endpoints</li>
           <li>Copy all the JSON text from each tab (it looks like code)</li>
           <li>Paste it into the box below and click "Save Snapshot"</li>
         </ol>
@@ -1882,7 +1831,7 @@
         id="jsonText"
         placeholder="Paste the raw JSON from USCIS API here...
 
-After clicking 'Open API tabs', you'll see a page with JSON data. Copy everything from that page and paste it here."
+After opening a person's tabs, you'll see a page with JSON data. Copy everything from that page and paste it here."
         aria-describedby="json-hint"
         rows="8"
       ></textarea>
@@ -2122,18 +2071,15 @@ function updateProgress() {
   // Update step 1 indicator
   const step1Indicator = document.getElementById('step1Indicator');
   const step1Helper = document.getElementById('step1Helper');
-  const openTabsBtn = document.getElementById('openTabsBtn');
 
   if (hasReceipts) {
     step1Indicator.classList.add('completed');
     step1Indicator.innerHTML = `<svg viewBox="0 0 20 20" fill="currentColor" style="width: 1.25rem; height: 1.25rem;"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`;
     if (step1Helper) step1Helper.style.display = 'none';
-    openTabsBtn.disabled = false;
   } else {
     step1Indicator.classList.remove('completed');
     step1Indicator.textContent = '1';
     if (step1Helper) step1Helper.style.display = 'flex';
-    openTabsBtn.disabled = true;
   }
 
   // Update step 2 indicator
@@ -2164,15 +2110,11 @@ function updateProgress() {
 
   // Auto-collapse onboarding sections when user has data
   if (hasCases) {
-    const aboutSection = document.getElementById('aboutSection');
     const receiptsSection = document.getElementById('receiptsSection');
     const step2Section = document.getElementById('step2Section');
 
-    // Auto-collapse About and Step 1 if not manually interacted with
+    // Auto-collapse Step 1 if not manually interacted with
     const savedStates = JSON.parse(localStorage.getItem('collapsedSections') || '{}');
-    if (savedStates.aboutSection === undefined && aboutSection && !aboutSection.classList.contains('collapsed')) {
-      aboutSection.classList.add('collapsed');
-    }
     if (savedStates.receiptsSection === undefined && receiptsSection && !receiptsSection.classList.contains('collapsed')) {
       receiptsSection.classList.add('collapsed');
     }
@@ -2289,6 +2231,7 @@ function renderReceipts() {
     collapsedCont.appendChild(collapsedChip);
   });
 
+  renderPersonApiButtons(cases, aliases);
   updateProgress();
 }
 
@@ -2329,11 +2272,55 @@ document.getElementById("addReceiptBtn").onclick = () => {
   setTimeout(() => btn.classList.remove("success"), 1000);
 };
 
-// open multiple tabs staggered
-function openAllApiTabs() {
-  const rec=loadReceipts();
-  if(rec.length===0) return alert("Add receipts first");
-  rec.forEach((r,i)=>setTimeout(()=>window.open(USCIS_BASE+encodeURIComponent(r),"_blank"),i*300));
+// Group by full identity so matching first names stay separate.
+function receiptGroups(cases = loadCases(), aliases = loadApplicantAliases()) {
+  const groups = new Map();
+  [...new Set(loadReceipts())].forEach(receipt => {
+    const person = applicantIdentity(cases[receipt], aliases);
+    if (!groups.has(person.key)) groups.set(person.key, {name: person.displayName, receipts: []});
+    groups.get(person.key).receipts.push(receipt);
+  });
+  return [...groups.values()];
+}
+
+function renderPersonApiButtons(cases, aliases) {
+  const expanded = document.getElementById('personApiButtons');
+  expanded.replaceChildren();
+  const collapsed = document.createElement('div');
+  collapsed.className = 'button-group';
+  document.getElementById('receiptChipsCollapsed').prepend(collapsed);
+  const hues = [220, 275, 165, 25, 330, 190];
+  receiptGroups(cases, aliases).forEach((group, index) => {
+    [expanded, collapsed].forEach(container => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.textContent = group.name === 'Unidentified applicant'
+        ? 'Open unassigned tabs' : 'Open all ' + group.name + ' tabs';
+      const hue = hues[index % hues.length];
+      button.style.background = 'hsl(' + hue + ' 80% 95%)';
+      button.style.color = 'hsl(' + hue + ' 75% 30%)';
+      button.style.borderColor = 'hsl(' + hue + ' 60% 75%)';
+      button.onclick = () => openPersonApiTabs(group.receipts, container);
+      container.appendChild(button);
+    });
+  });
+}
+
+function openPersonApiTabs(receipts, container) {
+  container.querySelector('.api-open-status')?.remove();
+  let blocked = 0;
+  receipts.forEach(receipt => {
+    const tab = window.open(USCIS_BASE + encodeURIComponent(receipt), '_blank');
+    if (tab) tab.opener = null;
+    else blocked++;
+  });
+  if (blocked) {
+    const status = document.createElement('span');
+    status.className = 'hint api-open-status';
+    status.setAttribute('role', 'status');
+    status.textContent = blocked + ' tab(s) blocked. Allow pop-ups for this tracker using the address-bar icon, then open the blocked tabs from Chrome’s popup menu.';
+    container.appendChild(status);
+  }
 }
 
 // open single API tab for a specific receipt
@@ -2341,7 +2328,7 @@ function openSingleApiTab(receiptNumber) {
   window.open(USCIS_BASE+encodeURIComponent(receiptNumber),"_blank");
 }
 
-document.getElementById("openTabsBtn").onclick = openAllApiTabs;
+
 
 // JSON viewer modal functions
 function switchTab(tab) {
@@ -3291,9 +3278,6 @@ function initializeCollapsedSections() {
 
   // Auto-collapse sections if user has cases (unless user has manually expanded them)
   if (hasCases) {
-    if (savedCollapsedStates.aboutSection === undefined) {
-      document.getElementById('aboutSection').classList.add('collapsed');
-    }
     if (savedCollapsedStates.receiptsSection === undefined) {
       document.getElementById('receiptsSection').classList.add('collapsed');
     }
@@ -3325,7 +3309,6 @@ renderReceipts();renderTimeline();initializeCollapsedSections();updateProgress()
       <ul>
         <li><a href="#receiptsSection">Track Multiple Cases</a></li>
         <li><a href="#step2Section">Unified Timeline View</a></li>
-        <li><a href="#aboutSection">100% Client-Side Privacy</a></li>
         <li>Smart Update Insights</li>
         <li>Business Hours Detection</li>
         <li>Reddit Export Feature</li>
