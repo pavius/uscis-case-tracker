@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <title>USCIS Case Tracker — Free Privacy-Focused Immigration Case Status API Tracker</title>
+  <title>USCIS Case Tracker</title>
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 
   <!-- Primary Meta Tags -->
@@ -247,7 +247,7 @@
       font-size: 2rem;
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: var(--space-sm);
+      margin: 0;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -1730,6 +1730,12 @@
       height: 1px;
       overflow: hidden;
     }
+    #saveJsonBtn:disabled { background: var(--bg); color: var(--text-light); opacity: 1; box-shadow: none; }
+    #saveJsonBtn[data-state="ready"] { background: #15803d; color: white; border-color: #15803d; }
+    #saveJsonBtn[data-state="ready"]:hover { background: #166534; }
+    #clipboardStatus { display: block; margin-top: var(--space-sm); color: var(--accent); font-weight: 600; }
+    #clipboardStatus:empty { display: none; }
+    #step2Section .json-actions { padding-top: 0; }
     .case-card-badges { display: flex; align-items: center; gap: var(--space-xs); }
     .case-card-header { flex-wrap: wrap; gap: var(--space-sm); }
     .timeline-pill {
@@ -1747,20 +1753,7 @@
 </head>
 <body itemscope itemtype="https://schema.org/WebApplication">
 <header>
-  <h1 itemprop="name">USCIS Case Tracker - Free Privacy-Focused Immigration Status Tracker</h1>
-  <p itemprop="description">100% client-side • Zero data sent to servers • All data stays in your browser</p>
-  <div class="privacy-badge" role="status" aria-label="Privacy and security badge">
-    <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" role="img" alt="Security shield icon">
-      <path fill-rule="evenodd" d="M10 1.944A11.954 11.954 0 012.166 5C2.056 5.649 2 6.319 2 7c0 5.225 3.34 9.67 8 11.317C14.66 16.67 18 12.225 18 7c0-.682-.057-1.35-.166-2.001A11.954 11.954 0 0110 1.944zM11 14a1 1 0 11-2 0 1 1 0 012 0zm0-7a1 1 0 10-2 0v3a1 1 0 102 0V7z" clip-rule="evenodd"/>
-    </svg>
-    Private &amp; Secure
-  </div>
-  <a href="https://github.com/humanstack/uscis-case-tracker" class="github-link" target="_blank" rel="noopener noreferrer" aria-label="View USCIS Case Tracker source code on GitHub" title="Open source USCIS immigration case tracker">
-    <svg class="github-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" role="img" alt="GitHub logo">
-      <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"/>
-    </svg>
-    View on GitHub
-  </a>
+  <h1 itemprop="name">USCIS Case Tracker</h1>
 </header>
 
 <main>
@@ -1895,13 +1888,16 @@ After clicking 'Open API tabs', you'll see a page with JSON data. Copy everythin
       ></textarea>
       <span id="json-hint" class="hint">Paste the entire JSON response from the USCIS API tab</span>
     </div>
-    <button class="primary" id="saveJsonBtn">
+    <div class="json-actions">
+    <button id="saveJsonBtn" disabled aria-describedby="json-hint">
       <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
         <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6a1 1 0 10-2 0v5.586l-1.293-1.293z"/>
         <path d="M3 17a2 2 0 002 2h10a2 2 0 002-2V7.414A2 2 0 0015.414 6L13 3.586A2 2 0 0011.586 3H5a2 2 0 00-2 2v12z"/>
       </svg>
-      Save Snapshot
+      Paste case data
     </button>
+    <span id="clipboardStatus" class="hint" role="status"></span>
+    </div>
   </section>
 
   <section class="card" aria-labelledby="timeline-title">
@@ -2197,6 +2193,11 @@ function updateProgress() {
   }
 }
 
+function caseProgress(data) {
+  if ((data.events || []).some(event => event.eventCode === 'SA')) return 'Approved';
+  return data.closed === true ? 'Completed' : 'In Progress';
+}
+
 // Update quick stats
 function updateQuickStats(cases) {
   const quickStatsBar = document.getElementById('quickStatsBar');
@@ -2216,7 +2217,7 @@ function updateQuickStats(cases) {
 
   Object.values(cases).forEach(caseData => {
     const latestData = caseData.history[caseData.history.length - 1].data;
-    if (latestData.closed === true) {
+    if (caseProgress(latestData) !== 'In Progress') {
       completed++;
     } else {
       inProgress++;
@@ -2801,85 +2802,155 @@ function isErrorResponse(data) {
   return false;
 }
 
-// save pasted JSON
-document.getElementById("saveJsonBtn").onclick = () => {
-  const raw = document.getElementById("jsonText").value.trim();
-  if (!raw) return;
+// Validate pasted data before offering to save it.
+function inspectCaseInput(raw, cases = loadCases()) {
+  if (!raw.trim()) return {state: 'empty', label: 'Paste case data', icon: '▤', hint: 'Paste a USCIS JSON response to check for updates.'};
+  let response;
+  try { response = JSON.parse(raw); }
+  catch { return {state: 'invalid', label: 'Invalid JSON', icon: '⚠', hint: 'Copy the entire JSON response from USCIS.'}; }
+  if (!response || typeof response !== 'object' || Array.isArray(response) || isErrorResponse(response)) {
+    return {state: 'invalid', label: 'No case data', icon: '⚠', hint: 'This is not a case response. Check your USCIS sign-in and copy the response again.'};
+  }
+  const data = response.data;
+  if (!data || typeof data !== 'object' || Array.isArray(data) ||
+      typeof data.receiptNumber !== 'string' || !isValidReceipt(data.receiptNumber) ||
+      typeof data.formType !== 'string' || !data.formType.trim() ||
+      ['events', 'notices'].some(key => data[key] != null &&
+        (!Array.isArray(data[key]) || data[key].some(item => !item || typeof item !== 'object')))) {
+    return {state: 'invalid', label: 'Not USCIS case data', icon: '⚠', hint: 'Paste a full USCIS case response containing a receipt number and form type.'};
+  }
+  const history = cases[data.receiptNumber]?.history || [];
+  const previous = history[history.length - 1]?.data;
+  // A timestamp-only update is still a new snapshot worth keeping.
+  const unchanged = previous && previous.updatedAtTimestamp === data.updatedAtTimestamp && !hasJsonChanged(previous, data);
+  const person = applicantIdentity({history: [{data}]}).displayName;
+  return {state: unchanged ? 'unchanged' : 'ready', data,
+    label: unchanged ? 'No changes to save' : 'Save new snapshot',
+    icon: unchanged ? '✓' : '↓',
+    hint: person + ' · ' + data.formType + ' · ' + data.receiptNumber +
+      (unchanged ? ' — matches your latest snapshot.' : ' — new data ready to save.')};
+}
 
-  let data;
+const jsonInput = document.getElementById('jsonText');
+let inputRevision = 0;
+let lastClipboardText = '';
+let clipboardReadPending = false;
+let pasteFeedbackAnimations = [];
+
+function updateSnapshotButton() {
+  let result;
+  try { result = inspectCaseInput(jsonInput.value); }
+  catch { result = {state: 'invalid', label: 'Unable to check data', icon: '⚠', hint: 'Could not compare this response with your saved cases.'}; }
+  const button = document.getElementById('saveJsonBtn');
+  button.disabled = result.state !== 'ready';
+  button.dataset.state = result.state;
+  button.innerHTML = '<span aria-hidden="true">' + result.icon + '</span> ' + result.label;
+  document.getElementById('json-hint').textContent = result.hint;
+  return result;
+}
+
+function showPasteFeedback(result, automatic = false) {
+  const status = document.getElementById('clipboardStatus');
+  status.textContent = '';
+  pasteFeedbackAnimations.forEach(animation => animation?.cancel());
+  pasteFeedbackAnimations = [];
+  if (!['ready', 'unchanged'].includes(result.state)) {
+    return;
+  }
+  if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
+    const timing = {delay: automatic ? 200 : 0, duration: 1000, easing: 'ease-out'};
+    pasteFeedbackAnimations = [jsonInput.animate?.([
+      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', backgroundColor: '#dbeafe', offset: 0},
+      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', backgroundColor: '#dbeafe', offset: 0.65},
+      {boxShadow: '0 0 0 0 rgba(37, 99, 235, 0)', backgroundColor: 'transparent', offset: 1}
+    ], timing), document.getElementById('saveJsonBtn').animate?.([
+      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', offset: 0},
+      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', offset: 0.65},
+      {boxShadow: '0 0 0 0 rgba(37, 99, 235, 0)', offset: 1}
+    ], timing)];
+  }
+}
+
+jsonInput.addEventListener('input', () => {
+  inputRevision++;
+  lastClipboardText = jsonInput.value.trim();
+  showPasteFeedback(updateSnapshotButton());
+});
+document.getElementById('json-hint').setAttribute('role', 'status');
+document.getElementById('saveJsonBtn').onclick = () => {
+  const result = updateSnapshotButton();
+  if (result.state !== 'ready') return;
+  const data = result.data;
   try {
-    data = JSON.parse(raw);
-  } catch(e) {
-    alert("Invalid JSON format. Please make sure you copied the entire response.");
-    return;
-  }
-
-  // Check for error response
-  if (isErrorResponse(data)) {
-    const message = `Unable to read case data. This usually means you're not logged in to USCIS.\n\n` +
-                   `Please follow these steps:\n` +
-                   `1. Open a new tab and go to myaccount.uscis.gov\n` +
-                   `2. Sign in with your USCIS account\n` +
-                   `3. Come back here and try again\n\n` +
-                   `If you're already logged in, try logging out and back in.`;
-    alert(message);
-    return;
-  }
-
-  if (!data.data || !data.data.receiptNumber) {
-    alert("Invalid response format. The JSON must contain case data with a receipt number.");
-    return;
-  }
-
-  const r = data.data.receiptNumber;
-  const cases = loadCases();
-
-  // Check if this is a new receipt number
-  if (!cases[r]) {
-    cases[r] = {
-      receiptNumber: r,
-      formType: data.data.formType,
-      history: []
-    };
-  }
-  // Check if this is new data
-  else if (cases[r].history.length > 0) {
-    const lastSnapshot = cases[r].history[cases[r].history.length - 1].data;
-    if (!hasJsonChanged(lastSnapshot, data.data)) {
-      alert("No changes detected for " + r + " since last snapshot");
-      document.getElementById("jsonText").value = "";
-      return;
+    const cases = loadCases();
+    if (!Object.hasOwn(cases, data.receiptNumber)) {
+      cases[data.receiptNumber] = {receiptNumber: data.receiptNumber, formType: data.formType, history: []};
     }
+    cases[data.receiptNumber].history.push({at: new Date().toISOString(), data});
+    saveCases(cases);
+  } catch {
+    document.getElementById('json-hint').textContent = 'Could not save. Browser storage may be full or unavailable. Your pasted data is still here.';
+    return;
   }
-
-  // Save new snapshot
-  cases[r].history.push({
-    at: new Date().toISOString(),
-    data: data.data
-  });
-  saveCases(cases);
+  lastClipboardText = jsonInput.value.trim();
+  jsonInput.value = '';
+  inputRevision++;
+  updateSnapshotButton();
+  document.getElementById('json-hint').textContent = 'Snapshot saved. Paste the next case response.';
   renderReceipts();
   renderTimeline();
   updateProgress();
-
-  // Clear input and show success
-  document.getElementById("jsonText").value = "";
-
-  // Show success message
-  const btn = document.getElementById("saveJsonBtn");
-  const originalText = btn.innerHTML;
-  btn.innerHTML = `
-    <svg class="icon" viewBox="0 0 20 20" fill="currentColor">
-      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-    </svg>
-    Saved!
-  `;
-  btn.classList.add('success');
-  setTimeout(() => {
-    btn.innerHTML = originalText;
-    btn.classList.remove('success');
-  }, 2000);
 };
+
+async function pasteCaseClipboard() {
+  if (clipboardReadPending || !document.hasFocus() || document.visibilityState !== 'visible') return;
+  const revision = inputRevision;
+  const original = jsonInput.value;
+  clipboardReadPending = true;
+  const status = document.getElementById('clipboardStatus');
+  try {
+    if (!navigator.clipboard?.readText) throw new Error('Clipboard unavailable');
+    // Let the browser request access when needed; no separate app opt-in.
+    // Unsupported permission queries must not prevent clipboard reads.
+    const permission = await navigator.permissions?.query({name: 'clipboard-read'}).catch(() => null);
+    if (permission?.state === 'denied') throw new Error('Clipboard denied');
+    const raw = (await navigator.clipboard.readText()).trim();
+    if (revision !== inputRevision || original !== jsonInput.value ||
+        !document.hasFocus() || document.visibilityState !== 'visible') return;
+    if (!raw) return;
+    if (raw === lastClipboardText) {
+      // Returning with the same response still deserves visible confirmation.
+      if (jsonInput.value.trim() === raw) showPasteFeedback(updateSnapshotButton(), true);
+      return;
+    }
+    const candidate = inspectCaseInput(raw);
+    if (!['ready', 'unchanged'].includes(candidate.state)) return;
+    const current = inspectCaseInput(jsonInput.value);
+    if (jsonInput.value.trim() && current.state !== 'unchanged') {
+      status.textContent = 'Your unsaved text was kept. Clear or save it before auto-pasting another case.';
+      return;
+    }
+    jsonInput.value = raw;
+    lastClipboardText = raw;
+    inputRevision++;
+    const result = updateSnapshotButton();
+    document.getElementById('step2Section').classList.remove('collapsed');
+    showPasteFeedback(result, true);
+  } catch {
+    status.textContent = 'Clipboard access is unavailable. You can still paste with ⌘V / Ctrl+V.';
+  } finally {
+    clipboardReadPending = false;
+  }
+}
+
+window.addEventListener('focus', () => { updateSnapshotButton(); pasteCaseClipboard(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') { updateSnapshotButton(); pasteCaseClipboard(); }
+});
+window.addEventListener('storage', event => {
+  if (event.key === 'cases') updateSnapshotButton();
+});
+updateSnapshotButton();
 
 // convert to ET
 function toET(iso){
@@ -3074,7 +3145,8 @@ function renderCaseSummary() {
     const data = latestSnapshot.data;
     const daysSinceSubmission = data.submissionTimestamp ? daysSince(data.submissionTimestamp) : null;
     const daysSinceUpdate = data.updatedAtTimestamp ? daysSince(data.updatedAtTimestamp) : null;
-    const isCompleted = data.closed === true;
+    const progress = caseProgress(data);
+    const isCompleted = progress !== 'In Progress';
 
     const card = document.createElement('div');
     card.className = 'case-card';
@@ -3088,7 +3160,7 @@ function renderCaseSummary() {
       </div>
       <div class="case-card-status">
         ${isCompleted ?
-          '<span class="status-badge completed">✓ Completed</span>' :
+          `<span class="status-badge completed">✓ ${progress}</span>` :
           '<span class="status-badge active">● In Progress</span>'
         }
       </div>
