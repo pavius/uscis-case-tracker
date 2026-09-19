@@ -748,7 +748,8 @@
     }
 
     .json-viewer, .diff-viewer {
-      background: hsl(var(--hue-primary) 20% 97%);
+      background: var(--bg);
+      color: var(--text);
       padding: var(--space-lg);
       border-radius: var(--radius-lg);
       font-family: var(--font-mono);
@@ -2386,8 +2387,15 @@ function familyGroups(cases = loadCases()) {
 }
 
 function familyCases() {
+  const formOrder = ['I485', 'I485J', 'I765', 'I131'];
+  const rank = value => {
+    const form = (value.history?.at(-1)?.data?.formType || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+    const index = formOrder.indexOf(form);
+    return index < 0 ? formOrder.length : index;
+  };
   return Object.fromEntries(Object.entries(loadCases()).filter(([, value]) =>
-    (applicantIdentity(value).key || '__unassigned') === selectedPerson));
+    (applicantIdentity(value).key || '__unassigned') === selectedPerson)
+    .sort(([receiptA, a], [receiptB, b]) => rank(a) - rank(b) || receiptA.localeCompare(receiptB)));
 }
 
 function visibleCases() {
@@ -2579,7 +2587,7 @@ function explainTimelineItem(item) {
   }
   if (item.noticeRecord) return {title: item.noticeRecord.actionType || 'Official notice', description: 'A notice was generated for this case.' + (item.noticeRecord.appointmentDateTime ? ' Appointment: ' + detailDate(item.noticeRecord.appointmentDateTime) + '.' : '') + ' The generated date is separate from any appointment date.', category: 'Notice'};
   if (item.label.endsWith('submitted')) return {title: 'Application filed', description: 'USCIS records this as the filing date for ' + (data.formType || 'this application') + (data.elisChannelType ? ' through ' + data.elisChannelType + '.' : '.'), category: 'Filing'};
-  if (item.label.includes('closed=')) return {title: item.label.includes('closed=true') ? 'Case record closed' : 'Case record open', description: 'The case record’s closed flag is ' + (item.label.includes('closed=true') ? 'true' : 'false') + '. This flag is separate from individual decisions and document-production events.', category: 'Record status'};
+  if (item.label.includes('closed=')) return {title: item.label.includes('closed=true') ? 'Case record closed' : 'Case record open', description: item.label.includes('closed=true') ? 'USCIS marked this record as closed. Check the decision events and notices for the outcome.' : 'USCIS has not marked this record as closed. This does not mean the case is still awaiting a decision: an approval or card-production event can appear while the record remains open.', category: 'Record status'};
   const events = data.events || [];
   const latestEvent = Math.max(0, ...events.map(event => Date.parse(event.createdAtTimestamp || event.eventTimestamp || event.eventDateTime) || 0));
   const silent = Date.parse(item.when) > latestEvent;
@@ -3384,13 +3392,6 @@ function buildTimeline(){
             caseContext
           });
         }
-        if(curr.closed !== undefined) {
-          items.push({
-            when: curr.updatedAtTimestamp || snapshot.at,
-            label: `${curr.formType} closed=${curr.closed}`,
-            caseContext
-          });
-        }
         (curr.events||[]).forEach(e => items.push({
           when: e.createdAtTimestamp || e.eventTimestamp || e.eventDateTime,
           eventRecord: e,
@@ -3411,7 +3412,7 @@ function buildTimeline(){
             caseContext
           });
         }
-        if(prev.closed !== curr.closed) {
+        if(typeof prev.closed === 'boolean' && typeof curr.closed === 'boolean' && prev.closed !== curr.closed) {
           items.push({
             when: curr.updatedAtTimestamp || snapshot.at,
             label: `${curr.formType} closed=${curr.closed}`,
