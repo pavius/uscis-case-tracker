@@ -1749,11 +1749,93 @@
       overflow-wrap: anywhere;
     }
     .chip span, .quick-link { overflow-wrap: anywhere; }
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117; --card: #161b22; --text: #e6edf3; --text-light: #8b949e;
+      --border: #30363d; --accent: #58a6ff; --accent-light: #182b42; --accent-border: #294969;
+      --accent-hover: #79b8ff; --success: #3fb950; --success-light: #142c20; --success-border: #285637;
+      --warning: #d4a843; --warning-light: #302817; --warning-border: #62512c;
+      --error: #f85149; --error-light: #331d22; --error-border: #633139;
+    }
+    body > header { padding: 12px 24px; background: #161b22; border-bottom: 1px solid var(--border); text-align: left; box-shadow: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    body > header h1 { font-size: 1.2rem; line-height: 1.3; color: #d4a843; text-shadow: none; margin: 0; }
+    #familyControls { display: flex; align-items: center; justify-content: flex-end; gap: 12px; flex-wrap: wrap; }
+    #familyControls button, #familySelect { min-height: 40px; padding: 8px 14px; font-size: .875rem; border-radius: 8px; }
+    #familySelect { width: auto; min-width: 140px; background: #1c2333; color: var(--text); border: 1px solid var(--border); }
+    #openPersonTabs { color: #d4a843; background: #302817; border-color: #62512c; }
+    #familyControls .api-open-status { flex-basis: 100%; max-width: 520px; }
+    main { max-width: 1400px; padding-top: 24px; }
+    .card { border: 1px solid var(--border); border-radius: 12px; box-shadow: none; }
+    .card:hover { box-shadow: none; }
+    .card::before { display: none; }
+    .card-header, .modal-header, .modal-footer { background: #161b22; }
+    .card-header { padding: 18px 24px; }
+    h2 { font-size: 1.1rem; }
+    .step-indicator { background: #1c2333; color: #d4a843; }
+    button, input, textarea, .chip, .view-json, .quick-link { background: #1c2333; color: var(--text); border-color: var(--border); }
+    input:focus, textarea:focus { background: #1c2333; }
+    button.primary { background: #254974; color: #e6edf3; }
+    #caseSummary { grid-template-columns: 1fr; }
+    .collapsed-content, .chip-container, footer, .modal-content, .tab-content, .tgroup, .tdate, .card.collapsible .card-header:hover { background: #161b22; }
+    .case-card { background: #161b22; border: 1px solid var(--border); padding: 24px; border-radius: 10px; }
+    .case-card:hover { transform: none; box-shadow: none; }
+    .case-card-receipt { color: #d4a843; font-family: var(--font-mono); }
+    .case-card-form, .timeline-pill { color: #79b8ff; background: #182b42; }
+    .case-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+    .case-metrics span { padding: 12px; background: #1c2333; border-radius: 8px; color: var(--text-light); font-size: .75rem; }
+    .case-metrics strong { display: block; color: #d4a843; font-size: 1.5rem; }
+    .case-detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    .case-card h3 { font-size: .9rem; color: #d4a843; margin-bottom: 12px; }
+    .detail-rows > div { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 1.4fr); gap: 16px; border-bottom: 1px solid var(--border); padding: 9px 0; font-size: .8rem; }
+    .detail-rows dt { color: var(--text-light); }
+    .detail-rows dd { margin: 0; overflow-wrap: anywhere; text-align: right; }
+    .case-analysis { margin: 24px 0; padding: 16px; background: #1c2333; border-radius: 8px; font-size: .875rem; }
+    .case-card details, .titem details { border-top: 1px solid var(--border); padding: 12px 0; }
+    summary { cursor: pointer; color: #79b8ff; font-size: .875rem; }
+    .record-detail { padding: 12px; margin-top: 10px; background: #0d1117; border-radius: 8px; }
+    .action-needed { color: #f0883e; }
+    .titem, .quick-stats { background: #161b22; border-color: var(--border); }
+    .tdate { color: #d4a843; }
+    .tdate::after { background: var(--border); }
+    .timeline::before { background: #30363d; }
+    .titem-time, .case-card-meta-label, .hint { color: var(--text-light); }
+    .status-badge.completed, .flag.completed { background: #142c20; color: #3fb950; }
+    .status-badge.active { background: #182b42; color: #79b8ff; }
+    .status-badge.denied { background: #331d22; color: #f85149; }
+    .helper-callout { background: #182b42; }
+    #jsonText { min-height: 120px; height: 140px; font-family: var(--font-mono); font-size: .8rem; }
+    #step2Section .input-group { padding-top: 0; }
+    #step2Section .step-header { padding: 18px 24px; }
+    :focus-visible { outline: 2px solid #d4a843; outline-offset: 3px; }
+    @media (max-width: 680px) {
+      body > header { padding: 12px 16px; flex-wrap: wrap; }
+      #familyControls { width: 100%; justify-content: space-between; }
+      #familySelect { flex: 1; min-width: 0; }
+      .case-detail-grid { grid-template-columns: 1fr; gap: 20px; }
+      .case-metrics { grid-template-columns: 1fr 1fr; }
+      .case-card { padding: 16px; }
+    }
+
+    #step2Section .step-header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+    #step2Section #saveJsonBtn { margin-left: auto; padding: 10px 16px; font-size: .875rem; }
+    #step2Section .json-actions { padding: 0 24px; }
+    #step2Section .json-actions:has(#clipboardStatus:empty) { display: none; }
+    #clipboardStatus:not(:empty) { margin-bottom: 16px; }
+    .event-explanation { margin: 12px 0; color: #bcc8d6; font-size: .875rem; line-height: 1.65; max-width: 85ch; }
+    #exportModal .modal-body, #exportModal .modal-header, #exportModal .modal-content { background: #161b22; color: #e6edf3; }
+    #exportPreview { background: #0d1117; color: #e6edf3; border: 1px solid #30363d; }
+    #caseSelector { display: flex; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--border); }
+    .case-select-button { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; padding: 12px 18px; border: 1px solid var(--border); border-radius: 8px; }
+    .case-select-button strong { font-size: .95rem; }
+    .case-select-button span { font: .75rem var(--font-mono); color: var(--text-light); }
+    .case-select-button[aria-pressed="true"] { background: #302817; border-color: #d4a843; color: #e8c775; }
+    .case-select-button[aria-pressed="true"] span { color: #d4bc86; }
   </style>
 </head>
 <body itemscope itemtype="https://schema.org/WebApplication">
 <header>
   <h1 itemprop="name">USCIS Case Tracker</h1>
+  <div id="familyControls"><button id="openPersonTabs" disabled>↗ Open tabs</button><label for="familySelect" class="sr-only">Family member</label><select id="familySelect" aria-label="Family member"></select></div>
 </header>
 
 <main>
@@ -1800,7 +1882,7 @@
           </svg>
           Add Receipt
         </button>
-        <div id="personApiButtons" class="button-group"></div>
+
       </div>
       <div id="receiptChips" class="chip-container" role="list" aria-label="Added receipt numbers"></div>
     </div>
@@ -1810,6 +1892,14 @@
     <div class="step-header">
       <span class="step-indicator" id="step2Indicator">2</span>
       <h2 id="json-title">Get Case Data from USCIS</h2>
+    <button id="saveJsonBtn" disabled aria-describedby="json-hint">
+      <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6a1 1 0 10-2 0v5.586l-1.293-1.293z"/>
+        <path d="M3 17a2 2 0 002 2h10a2 2 0 002-2V7.414A2 2 0 0015.414 6L13 3.586A2 2 0 0011.586 3H5a2 2 0 00-2 2v12z"/>
+      </svg>
+      Paste case data
+    </button>
+
     </div>
     <div class="helper-callout" id="step2Helper">
       <svg class="helper-callout-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1819,7 +1909,7 @@
         <div class="helper-callout-title">How to get your case data</div>
         <ol>
           <li>Make sure you're logged into <a href="https://myaccount.uscis.gov/sign-in" target="_blank" rel="noopener">myaccount.uscis.gov</a></li>
-          <li>Click a person’s “Open all” button above to open the official USCIS JSON endpoints</li>
+          <li>Select a family member in the header, then click their “Open tabs” button</li>
           <li>Copy all the JSON text from each tab (it looks like code)</li>
           <li>Paste it into the box below and click "Save Snapshot"</li>
         </ol>
@@ -1838,14 +1928,7 @@ After opening a person's tabs, you'll see a page with JSON data. Copy everything
       <span id="json-hint" class="hint">Paste the entire JSON response from the USCIS API tab</span>
     </div>
     <div class="json-actions">
-    <button id="saveJsonBtn" disabled aria-describedby="json-hint">
-      <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-        <path d="M7.707 10.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V6a1 1 0 10-2 0v5.586l-1.293-1.293z"/>
-        <path d="M3 17a2 2 0 002 2h10a2 2 0 002-2V7.414A2 2 0 0015.414 6L13 3.586A2 2 0 0011.586 3H5a2 2 0 00-2 2v12z"/>
-      </svg>
-      Paste case data
-    </button>
-    <span id="clipboardStatus" class="hint" role="status"></span>
+   <span id="clipboardStatus" class="hint" role="status"></span>
     </div>
   </section>
 
@@ -1853,7 +1936,7 @@ After opening a person's tabs, you'll see a page with JSON data. Copy everything
     <div class="card-header">
       <div class="step-header">
         <span class="step-indicator" id="step3Indicator">3</span>
-        <h2 id="timeline-title">Your Case Timeline</h2>
+        <h2 id="timeline-title">Case details & timeline</h2>
       </div>
       <button onclick="exportTimeline()" class="export-btn" aria-label="Export timeline for Reddit" id="exportBtn" style="display: none;">
         <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -1862,6 +1945,7 @@ After opening a person's tabs, you'll see a page with JSON data. Copy everything
         Export for Reddit
       </button>
     </div>
+    <div id="caseSelector" role="group" aria-label="Choose a case"></div>
     <div id="quickStatsBar" class="quick-stats" style="display: none;">
       <div class="quick-stats-items">
         <div class="quick-stat">
@@ -2136,12 +2220,15 @@ function updateProgress() {
 }
 
 function caseProgress(data) {
-  if ((data.events || []).some(event => event.eventCode === 'SA')) return 'Approved';
+  const decisions = {SA: 'Approved', DA: 'Approved', DH: 'Approved', IEA: 'Approved', IEE: 'Approved', EA: 'Denied', IFA: 'Denied'};
+  const decision = [...(data.events || [])].sort((a,b) => new Date(b.createdAtTimestamp || b.eventTimestamp || 0) - new Date(a.createdAtTimestamp || a.eventTimestamp || 0)).find(event => decisions[event.eventCode]);
+  if (decision) return decisions[decision.eventCode];
   return data.closed === true ? 'Completed' : 'In Progress';
 }
 
 // Update quick stats
 function updateQuickStats(cases) {
+  cases = visibleCases();
   const quickStatsBar = document.getElementById('quickStatsBar');
   if (!quickStatsBar) return;
 
@@ -2175,6 +2262,7 @@ function updateQuickStats(cases) {
 
 // render receipts
 function renderReceipts() {
+  renderFamilySelector();
   const cont = document.getElementById("receiptChips");
   const collapsedCont = document.getElementById("receiptChipsCollapsed");
 
@@ -2183,7 +2271,7 @@ function renderReceipts() {
 
   const cases = loadCases();
   const aliases = loadApplicantAliases();
-  loadReceipts().forEach(r => {
+  loadReceipts().filter(r => (applicantIdentity(cases[r], aliases).key || '__unassigned') === selectedPerson).forEach(r => {
     const person = applicantIdentity(cases[r], aliases);
     const history = cases[r]?.history || [];
     const formType = history[history.length - 1]?.data?.formType;
@@ -2231,7 +2319,6 @@ function renderReceipts() {
     collapsedCont.appendChild(collapsedChip);
   });
 
-  renderPersonApiButtons(cases, aliases);
   updateProgress();
 }
 
@@ -2283,27 +2370,274 @@ function receiptGroups(cases = loadCases(), aliases = loadApplicantAliases()) {
   return [...groups.values()];
 }
 
-function renderPersonApiButtons(cases, aliases) {
-  const expanded = document.getElementById('personApiButtons');
-  expanded.replaceChildren();
-  const collapsed = document.createElement('div');
-  collapsed.className = 'button-group';
-  document.getElementById('receiptChipsCollapsed').prepend(collapsed);
-  const hues = [220, 275, 165, 25, 330, 190];
-  receiptGroups(cases, aliases).forEach((group, index) => {
-    [expanded, collapsed].forEach(container => {
-      const button = document.createElement('button');
-      button.type = 'button';
-      button.textContent = group.name === 'Unidentified applicant'
-        ? 'Open unassigned tabs' : 'Open all ' + group.name + ' tabs';
-      const hue = hues[index % hues.length];
-      button.style.background = 'hsl(' + hue + ' 80% 95%)';
-      button.style.color = 'hsl(' + hue + ' 75% 30%)';
-      button.style.borderColor = 'hsl(' + hue + ' 60% 75%)';
-      button.onclick = () => openPersonApiTabs(group.receipts, container);
-      container.appendChild(button);
-    });
+let selectedPerson = localStorage.getItem('selectedPerson') || '';
+let selectedCase = '';
+const selectedCasesByPerson = JSON.parse(localStorage.getItem('selectedCasesByPerson') || '{}');
+
+function familyGroups(cases = loadCases()) {
+  const groups = new Map();
+  [...new Set([...loadReceipts(), ...Object.keys(cases)])].forEach(receipt => {
+    const person = applicantIdentity(cases[receipt]);
+    const key = person.key || '__unassigned';
+    if (!groups.has(key)) groups.set(key, {key, name: person.key ? person.displayName : 'Unassigned', receipts: []});
+    groups.get(key).receipts.push(receipt);
   });
+  return [...groups.values()];
+}
+
+function familyCases() {
+  return Object.fromEntries(Object.entries(loadCases()).filter(([, value]) =>
+    (applicantIdentity(value).key || '__unassigned') === selectedPerson));
+}
+
+function visibleCases() {
+  const cases = familyCases();
+  const receipt = Object.hasOwn(cases, selectedCase) ? selectedCase : Object.keys(cases)[0];
+  return receipt ? {[receipt]: cases[receipt]} : {};
+}
+
+function renderCaseSelector() {
+  const cases = familyCases();
+  const remembered = selectedCasesByPerson[selectedPerson];
+  selectedCase = Object.hasOwn(cases, remembered) ? remembered : Object.keys(cases)[0] || '';
+  const container = document.getElementById('caseSelector');
+  container.replaceChildren();
+  Object.entries(cases).forEach(([receipt, caseData]) => {
+    const data = caseData.history?.at(-1)?.data || {};
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'case-select-button';
+    button.setAttribute('aria-pressed', String(receipt === selectedCase));
+    button.setAttribute('aria-label', (data.formType || 'Case') + ' · ' + receipt);
+    button.innerHTML = '<strong>' + escapeHTML(data.formType || 'Case') + '</strong><span>' + escapeHTML(receipt) + '</span>';
+    button.onclick = () => {
+      selectedCasesByPerson[selectedPerson] = receipt;
+      localStorage.setItem('selectedCasesByPerson', JSON.stringify(selectedCasesByPerson));
+      renderCaseSelector();
+      updateQuickStats(cases);
+      renderTimeline();
+    };
+    container.appendChild(button);
+  });
+  if (!Object.keys(cases).length) container.textContent = 'Save case data to choose a case.';
+}
+
+function renderFamilySelector() {
+  const groups = familyGroups();
+  if (!groups.some(group => group.key === selectedPerson)) selectedPerson = groups[0]?.key || '';
+  const select = document.getElementById('familySelect');
+  select.replaceChildren();
+  groups.forEach(group => {
+    const option = document.createElement('option');
+    option.value = group.key;
+    option.textContent = group.name;
+    select.appendChild(option);
+  });
+  if (!groups.length) {
+    const option = document.createElement('option');
+    option.textContent = 'No saved cases';
+    select.appendChild(option);
+  }
+  select.value = selectedPerson;
+  renderCaseSelector();
+  select.disabled = !groups.length;
+  const current = groups.find(group => group.key === selectedPerson);
+  const button = document.getElementById('openPersonTabs');
+  button.disabled = !current?.receipts.length;
+  button.textContent = current ? '↗ Open ' + current.name + ' tabs' : '↗ Open tabs';
+  button.onclick = () => openPersonApiTabs(current.receipts, document.getElementById('familyControls'));
+  select.onchange = () => {
+    selectedPerson = select.value;
+    localStorage.setItem('selectedPerson', selectedPerson);
+    document.querySelector('#familyControls .api-open-status')?.remove();
+    renderReceipts();
+    renderTimeline();
+  };
+}
+
+// NIEM 5.0 benefit document status labels; descriptive reference, not a prediction.
+// https://niem.github.io/model/5.0/scr/BenefitDocumentStatusCategoryCodeSimpleType/
+const eventCodeLabels = {
+  "AALB": "RECEIVED AT THE LOCKBOX",
+  "DA": "APPROVED/NOTICE ORDERED",
+  "DH": "APPROVED ON SERVICE MOTION/NOTICE ORDERED",
+  "EA": "DENIAL NOTICE ORDERED",
+  "EN": "CASE TERMINATED; STATUS ACQUIRED THROUGH OTHER MEANS",
+  "EX": "SYSTEM CLOSURE",
+  "EZ": "ADMINISTRATIVE CLOSE",
+  "FBA": "INITIAL EVIDENCE REQUEST NOTICE ORDERED",
+  "FBB": "ADDITIONAL EVIDENCE REQUEST NOTICE ORDERED",
+  "FE": "INTENT TO DENY NOTICE ORDERED",
+  "FH": "PLACE IN INTERVIEW QUE",
+  "FHB": "READY FOR INTERVIEW SCHEDULING",
+  "FI": "FORCE SCHEDULE INTERVIEW",
+  "FJ": "INTERVIEW SCHEDULED/NOTICE ORDERED",
+  "FKA": "DESCHEDULE",
+  "FKB": "CANCEL INTERVIEW BASED ON REQUEST",
+  "FL": "FAILED TO APPEAR FOR INTERVIEW OR ADIT PROCESSING",
+  "FLR": "RETURN FROM LAW ENFORCEMENT SUPPORT CENTER",
+  "FLS": "SENT TO LAW ENFORCEMENT SUPPORT CENTER",
+  "FM": "RESCHEDULE INTERVIEW",
+  "FN": "FINGERPRINT/AGENCY CHECKS ORDERED",
+  "FNA": "FINGERPRINT APPOINTMENT NOTICE ORDERED",
+  "FNB": "FINGERPRINTS TAKEN",
+  "FNC": "FD-258 SENT TO FBI",
+  "FNG": "FINGERPRINT PROCESSING COMPLETE-IDENT",
+  "FNH": "FINGERPRINT PROCESSING COMPLETE-NON-IDENT",
+  "FR": "ADJUDICATION HOLD LIFTED",
+  "FS": "ADJUDICATION HOLD PLACED",
+  "FSA0": "REQUEST DATABASE CHECKS",
+  "FT": "PROCESSING HOLD LIFTED",
+  "FT0": "OFFICER PROCESSING BEGUN",
+  "FTA0": "DATABASE CHECKS RECEIVED",
+  "HA": "RESPONSE TO REQUEST NOTICE TO APPLICATION/PETITION RECEIVED",
+  "HC": "INVESTIGATIVE REPORT/AGENCY CHECKS RECEIVED",
+  "HG": "INTERVIEW CONDUCTED",
+  "IAA": "RECEIPT NOTICE SENT",
+  "IAAA": "RECEIPT NOTICE W/REQUEST FOR I-89 PROCESSING SENT",
+  "IAB": "MODIFIED RECEIPT NOTICE 1 SENT",
+  "IAC": "MODIFIED RECEIPT NOTICE 2 SENT",
+  "IAD": "FEE COLLECTED ELSEWHERE RECEIPT NOTICE SENT",
+  "IAF": "RECEIPT LETTER EMAILED",
+  "IEA": "APPROVAL NOTICE SENT",
+  "IEC": "WELCOME NOTICE SENT",
+  "IEE": "APPROVAL LETTER EMAILED",
+  "IFA": "DENIAL NOTICE SENT",
+  "II": "NOTICE OF INTENT TO DENY SENT",
+  "IK": "REQUEST FOR ADDITIONAL EVIDENCE SENT",
+  "IM": "INTERVIEW NOTICE SENT",
+  "KA": "SUPERVISORY HOLD PLACED",
+  "KBA": "SUPERVISORY HOLD CLEARED - ACTION CONFIRMED",
+  "KBB": "SUPERVISORY HOLD CLEARED - ACTION CANCELLED",
+  "KC": "QUALITY REVIEW HOLD PLACED",
+  "KDA": "QUALITY REVIEW HOLD CLEARED - ACTION CONFIRMED",
+  "LAA": "CARD REQUEST SENT TO ICPS PRINT SERVER",
+  "LDA": "CARD PRODUCED",
+  "LEA": "CARD MAILED TO APPLICANT",
+  "MO": "EAD NOT PRODUCED SINCE ADJUSTMENT GRANTED",
+  "QAA": "FBI NAME CHECK RESULT - NO RECORD (NR)",
+  "QAB": "FBI NAME CHECK RESULT - PENDING (IP)",
+  "QAE": "FBI NAME CHECK RESULT - POSITIVE RESPONSE (PR)",
+  "TA": "PRE-ADJUDICATED - UNDER REVIEW"
+};
+
+function explainTimelineItem(item) {
+  const data = item.caseContext.data;
+  const code = item.eventRecord?.eventCode;
+  const documentName = {'I-485': 'green card', 'I-765': 'employment authorization card', 'I-131': 'travel document'}[data.formType] || 'benefit document';
+  if (code) {
+    const specific = {
+      SA: ['Application approved', 'This event is interpreted as approval of the ' + (data.formType || 'application') + ' by the reference tracker. Confirm the decision in your USCIS approval notice.', 'Approved'],
+      H008: ['Approval recorded', 'The reference tracker interprets this code as a case approval. Check the official notice for the decision and its effective date.', 'Approved'],
+      FTA0: ['Background check results received', 'USCIS recorded receipt of database-check results. Multiple entries can represent separate checks; this code alone does not describe the results or confirm approval.', 'Background checks'],
+      FTA1: ['Follow-up check results recorded', 'The reference tracker interprets this as a follow-up database-check event. It does not establish that a supervisor reviewed the case or that an interview was waived.', 'Background checks'],
+      IKA: ['Initial evidence requested', 'The reference tracker associates this code with an initial request for evidence. Review the official notice for the requested documents and response deadline.', 'Evidence request'],
+      IAF: ['Receipt letter emailed', 'An electronic receipt letter was recorded. Its generation time can be later than the original filing date.', 'Receipt'],
+      IAA: ['Receipt notice sent', 'USCIS recorded sending the receipt notice for this application.', 'Receipt'],
+      AALB: ['Application received at lockbox', 'The application package was recorded as received at a USCIS lockbox.', 'Receipt'],
+      DA: ['Application approved; notice ordered', 'An approval decision and an order to generate its notice were recorded. This is separate from producing or mailing a document.', 'Approved'],
+      DH: ['Approved on service motion', 'USCIS recorded approval on a service motion and ordered the notice.', 'Approved'],
+      IEA: ['Approval notice sent', 'The record shows the approval notice was sent. The notice contains the decision details.', 'Approved'],
+      IEE: ['Approval letter emailed', 'USCIS recorded emailing the approval letter.', 'Approved'],
+      IEC: ['Welcome notice sent', 'USCIS recorded sending a welcome notice. Refer to the notice for the benefit granted.', 'Approved'],
+      LAA: ['Document production requested', 'A request to produce the ' + documentName + ' was sent to the printing system. This does not yet confirm production or mailing.', 'Document'],
+      LDA: ['Document produced', 'The ' + documentName + ' was recorded as produced. A separate mailing event may follow.', 'Document'],
+      LEA: ['Document mailed', 'USCIS recorded mailing the ' + documentName + '. This event does not confirm delivery or provide a delivery estimate.', 'Document'],
+      MO: ['EAD not produced after adjustment', 'The record indicates that employment authorization document production was skipped because adjustment was granted.', 'Document'],
+      FJ: ['Interview scheduled', 'An interview was scheduled and a notice ordered. Check the appointment notice for its date, location, and instructions.', 'Interview'],
+      HG: ['Interview conducted', 'The record shows that an interview took place. A decision may be recorded separately.', 'Interview'],
+      FHB: ['Ready for interview scheduling', 'The case was marked ready for scheduling. This is not an appointment confirmation.', 'Interview'],
+      FH: ['Placed in interview queue', 'The case entered the interview queue; no appointment date is implied by this event.', 'Interview'],
+      FNA: ['Biometrics notice ordered', 'USCIS ordered a fingerprint appointment notice. Read the notice for appointment details.', 'Background checks'],
+      FNB: ['Fingerprints taken', 'Fingerprint collection was recorded. Collection and completion of background checks are separate events.', 'Background checks'],
+      FSA0: ['Database checks requested', 'USCIS initiated database checks. Results may appear as later events.', 'Background checks'],
+      FT0: ['Officer processing started', 'This event explicitly records the start of officer processing. It does not specify an outcome.', 'Processing'],
+      TA: ['Pre-adjudication review', 'The case is marked pre-adjudicated and under review. This is not a final decision.', 'Processing'],
+      FBA: ['Initial evidence notice ordered', 'USCIS ordered a request for initial evidence. The official notice specifies what is required and when to respond.', 'Evidence request'],
+      FBB: ['Additional evidence notice ordered', 'USCIS ordered an additional evidence request. Review the notice for its scope and deadline.', 'Evidence request'],
+      IK: ['Evidence request sent', 'The record shows an additional-evidence request was sent. Consult the notice before responding.', 'Evidence request'],
+      HA: ['Response to request received', 'USCIS recorded receiving a response to a request. Receipt does not mean the response has been accepted as sufficient.', 'Evidence request'],
+      EA: ['Denial notice ordered', 'USCIS recorded ordering a denial notice. Read the official decision for its reasons and any available next steps.', 'Denied'],
+      IFA: ['Denial notice sent', 'USCIS recorded sending a denial notice. The official notice contains the decision details.', 'Denied'],
+      FE: ['Intent-to-deny notice ordered', 'USCIS ordered a notice of intent to deny. An intent notice is not the same as a final denial; review its response instructions.', 'Action required'],
+      II: ['Intent-to-deny notice sent', 'USCIS recorded sending a notice of intent to deny. Review its instructions and response deadline.', 'Action required'],
+      EX: ['Case closed in system', 'The system recorded closing the case. Closure alone does not establish approval or denial.', 'Closed'],
+      EZ: ['Case administratively closed', 'An administrative closure was recorded. Check USCIS correspondence for the reason and effect.', 'Closed'],
+      EN: ['Case terminated', 'This code describes termination after status was acquired through other means. Check the official record for the circumstances.', 'Closed']
+    };
+    if (specific[code]) {
+      const [title, description, category] = specific[code];
+      return {title, description, category};
+    }
+    const label = eventCodeLabels[code];
+    if (label) {
+      const title = label.charAt(0) + label.slice(1).toLowerCase();
+      const category = /HOLD|LAW ENFORCEMENT/.test(label) ? 'Review / hold' : /INTERVIEW/.test(label) ? 'Interview' : /FINGERPRINT|FBI|CHECK/.test(label) ? 'Background checks' : /RECEIPT/.test(label) ? 'Receipt' : 'Processing';
+      return {title, description: 'USCIS recorded this status: ' + title + '. The event timestamps below show when the event occurred and when it was entered or updated in the system.', category};
+    }
+    return {title: 'USCIS event ' + code, description: 'No description is available for this code. The original event fields are preserved below.', category: 'Event'};
+  }
+  if (item.noticeRecord) return {title: item.noticeRecord.actionType || 'Official notice', description: 'A notice was generated for this case.' + (item.noticeRecord.appointmentDateTime ? ' Appointment: ' + detailDate(item.noticeRecord.appointmentDateTime) + '.' : '') + ' The generated date is separate from any appointment date.', category: 'Notice'};
+  if (item.label.endsWith('submitted')) return {title: 'Application filed', description: 'USCIS records this as the filing date for ' + (data.formType || 'this application') + (data.elisChannelType ? ' through ' + data.elisChannelType + '.' : '.'), category: 'Filing'};
+  if (item.label.includes('closed=')) return {title: item.label.includes('closed=true') ? 'Case record closed' : 'Case record open', description: 'The case record’s closed flag is ' + (item.label.includes('closed=true') ? 'true' : 'false') + '. This flag is separate from individual decisions and document-production events.', category: 'Record status'};
+  const events = data.events || [];
+  const latestEvent = Math.max(0, ...events.map(event => Date.parse(event.createdAtTimestamp || event.eventTimestamp || event.eventDateTime) || 0));
+  const silent = Date.parse(item.when) > latestEvent;
+  return {title: silent ? 'Case updated without a new event' : 'Case record updated', description: silent ? 'The case update timestamp is later than its latest recorded event. This is sometimes called a silent update. The JSON does not identify who made the change or why.' : 'The case’s update timestamp changed. See the associated events and the JSON snapshot for the recorded details.', category: silent ? 'Silent update' : 'Update'};
+}
+
+function detailDate(value) {
+  if (!value) return 'Not provided';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return dateFromKey(value);
+  const formatted = toET(value);
+  return formatted ? formatted.text + ' ET' : String(value);
+}
+
+function detailRows(rows) {
+  return '<dl class="detail-rows">' + rows.map(([key, value]) => '<div><dt>' + escapeHTML(key) +
+    '</dt><dd>' + escapeHTML(value == null || value === '' ? 'Not provided' : value) + '</dd></div>').join('') + '</dl>';
+}
+
+function flagText(value, yes, no) {
+  return value === true ? yes : value === false ? no : 'Not provided';
+}
+
+function recordDetails(records, empty) {
+  if (!records?.length) return '<p class="hint">' + empty + '</p>';
+  return records.map(record => '<div class="record-detail">' + detailRows(Object.entries(record).map(([key, value]) => [
+    key.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/^./, c => c.toUpperCase()),
+    /date|timestamp/i.test(key) && typeof value === 'string' ? detailDate(value) :
+      typeof value === 'object' ? JSON.stringify(value) : value
+  ])) + '</div>').join('');
+}
+
+function expandedCaseDetails(data, caseData) {
+  const events = data.events || [], notices = data.notices || [];
+  const filed = data.submissionTimestamp || data.submissionDate;
+  const updated = data.updatedAtTimestamp || data.updatedAt;
+  const ended = caseProgress(data) !== 'In Progress';
+  const endDate = ended && updated ? new Date(updated) : new Date();
+  const days = filed && !isNaN(new Date(filed)) && !isNaN(endDate) ? Math.max(0, Math.floor((endDate - new Date(filed)) / 86400000)) : '—';
+  const latest = [...events].sort((a,b) => new Date(b.createdAtTimestamp || b.eventTimestamp || b.eventDateTime) - new Date(a.createdAtTimestamp || a.eventTimestamp || a.eventDateTime))[0];
+  return `<div class="case-metrics"><span><strong>${days}</strong>${ended && updated ? 'days from filing to last update' : 'days since filing'}</span><span><strong>${events.length}</strong>events</span><span><strong>${notices.length}</strong>notices</span><span><strong>${caseData.history.length}</strong>snapshots</span></div>
+    <div class="case-detail-grid"><section><h3>Application information</h3>${detailRows([
+      ['Receipt number', data.receiptNumber], ['Form type', data.formType], ['Form name', data.formName],
+      ['Applicant', applicantIdentity(caseData).displayName], ['Filed', detailDate(filed)],
+      ['Last updated', detailDate(updated)], ['Filing channel', data.elisChannelType]
+    ])}</section><section><h3>Case flags & status</h3>${detailRows([
+      ['Case status', data.caseStatus || caseProgress(data)], ['Record closed', flagText(data.closed, 'Yes', 'No')],
+      ['Adjudicator & CMS', flagText(data.ackedByAdjudicatorAndCms, 'Acknowledged', 'Pending')],
+      ['Processing', flagText(data.isPremiumProcessed, 'Premium', 'Standard')],
+      ['Group status', flagText(data.areAllGroupStatusesComplete, 'All complete', 'Pending')],
+      ['Action required', flagText(data.actionRequired, 'Yes', 'No')],
+      ['Evidence requests', (data.evidenceRequests || []).length]
+    ])}</section></div>
+    <section class="case-analysis"><h3>Case summary</h3><p>${escapeHTML(data.formType || 'Case')} · ${escapeHTML(caseProgress(data))}. ${events.length} recorded events and ${notices.length} notices in the latest snapshot.${latest ? ' Latest recorded event: ' + escapeHTML(latest.eventCode || 'Unspecified') + ' (' + escapeHTML(detailDate(latest.createdAtTimestamp || latest.eventTimestamp || latest.eventDateTime)) + ').' : ''}</p>
+    ${data.actionRequired === true ? '<p class="action-needed">USCIS marks this case as requiring action. Review the notices and evidence requests below.</p>' : ''}</section>
+    <details ${notices.length ? 'open' : ''}><summary>Official notices · ${notices.length}</summary>${recordDetails(notices, 'No notices in this snapshot.')}</details>
+    <details ${(data.evidenceRequests || []).length ? 'open' : ''}><summary>Evidence requests · ${(data.evidenceRequests || []).length}</summary>${recordDetails(data.evidenceRequests, 'No evidence requests in this snapshot.')}</details>
+    <details><summary>Documents · ${(data.documents || []).length}</summary>${recordDetails(data.documents, 'No documents in this snapshot.')}</details>
+    <details><summary>All case fields</summary>${recordDetails([Object.fromEntries(Object.entries(data).filter(([key]) => !['events','notices','documents','evidenceRequests','applicantName'].includes(key)))], '')}</details>`;
 }
 
 function openPersonApiTabs(receipts, container) {
@@ -2847,8 +3181,8 @@ function showPasteFeedback(result, automatic = false) {
   if (!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
     const timing = {delay: automatic ? 200 : 0, duration: 1000, easing: 'ease-out'};
     pasteFeedbackAnimations = [jsonInput.animate?.([
-      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', backgroundColor: '#dbeafe', offset: 0},
-      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', backgroundColor: '#dbeafe', offset: 0.65},
+      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', backgroundColor: '#254974', offset: 0},
+      {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', backgroundColor: '#254974', offset: 0.65},
       {boxShadow: '0 0 0 0 rgba(37, 99, 235, 0)', backgroundColor: 'transparent', offset: 1}
     ], timing), document.getElementById('saveJsonBtn').animate?.([
       {boxShadow: '0 0 0 5px rgba(37, 99, 235, 0.55)', offset: 0},
@@ -2935,7 +3269,11 @@ document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible') { updateSnapshotButton(); pasteCaseClipboard(); }
 });
 window.addEventListener('storage', event => {
-  if (event.key === 'cases') updateSnapshotButton();
+  if (['cases', 'receipts', 'applicantAliases'].includes(event.key)) {
+    renderReceipts();
+    renderTimeline();
+    updateSnapshotButton();
+  }
 });
 updateSnapshotButton();
 
@@ -3010,7 +3348,7 @@ function getEventInsight(eventCode, curr, prev) {
 
 // build unified timeline
 function buildTimeline(){
-  const cases = loadCases();
+  const cases = visibleCases();
   const items = [];
 
   for(const c of Object.values(cases)){
@@ -3031,9 +3369,10 @@ function buildTimeline(){
 
       // baseline
       if(!prev){
-        if(curr.submissionTimestamp) {
+        if(curr.submissionTimestamp || curr.submissionDate) {
           items.push({
-            when: curr.submissionTimestamp,
+            when: curr.submissionTimestamp || (/^\d{4}-\d{2}-\d{2}$/.test(curr.submissionDate) ? curr.submissionDate + 'T12:00:00Z' : curr.submissionDate),
+            dateOnly: !curr.submissionTimestamp && /^\d{4}-\d{2}-\d{2}$/.test(curr.submissionDate) ? curr.submissionDate : null,
             label: `${curr.formType} ${curr.receiptNumber} submitted`,
             caseContext
           });
@@ -3053,12 +3392,14 @@ function buildTimeline(){
           });
         }
         (curr.events||[]).forEach(e => items.push({
-          when: e.createdAtTimestamp,
+          when: e.createdAtTimestamp || e.eventTimestamp || e.eventDateTime,
+          eventRecord: e,
           label: `${curr.formType} ${e.eventCode} event`,
           caseContext
         }));
         (curr.notices||[]).forEach(n => items.push({
-          when: n.generationDate,
+          when: n.generationDate || n.appointmentDateTime,
+          noticeRecord: n,
           label: `${curr.formType} notice: ${n.actionType}`,
           caseContext
         }));
@@ -3081,7 +3422,8 @@ function buildTimeline(){
         (curr.events||[]).forEach(e => {
           if(!prevEv.has(e.eventId)) {
             items.push({
-              when: e.createdAtTimestamp,
+              when: e.createdAtTimestamp || e.eventTimestamp || e.eventDateTime,
+          eventRecord: e,
               label: `${curr.formType} new event ${e.eventCode}`,
               caseContext
             });
@@ -3091,7 +3433,8 @@ function buildTimeline(){
         (curr.notices||[]).forEach(n => {
           if(!prevNo.has(n.letterId)) {
             items.push({
-              when: n.generationDate,
+              when: n.generationDate || n.appointmentDateTime,
+          noticeRecord: n,
               label: `${curr.formType} new notice: ${n.actionType}`,
               caseContext
             });
@@ -3101,9 +3444,9 @@ function buildTimeline(){
     }
   }
 
-  items.forEach(it => {it.et = toET(it.when);});
+  items.forEach(it => {it.et = it.dateOnly ? {dateKey: it.dateOnly, text: dateFromKey(it.dateOnly), hour: 12} : toET(it.when);});
   items.sort((a,b) => new Date(b.when) - new Date(a.when));
-  return items;
+  return items.filter(item => item.et);
 }
 
 // Calculate days since date
@@ -3116,62 +3459,22 @@ function daysSince(dateString) {
 
 // Render case summary cards
 function renderCaseSummary() {
-  const cases = loadCases();
-  const summaryContainer = document.getElementById('caseSummary');
-
-  if (Object.keys(cases).length === 0) {
-    summaryContainer.style.display = 'none';
-    return;
-  }
-
-  summaryContainer.style.display = 'grid';
-  summaryContainer.innerHTML = '';
-
+  const cases = visibleCases();
+  const container = document.getElementById('caseSummary');
+  container.replaceChildren();
+  container.style.display = Object.keys(cases).length ? 'grid' : 'none';
   Object.values(cases).forEach(caseData => {
-    const latestSnapshot = caseData.history[caseData.history.length - 1];
-    const data = latestSnapshot.data;
-    const daysSinceSubmission = data.submissionTimestamp ? daysSince(data.submissionTimestamp) : null;
-    const daysSinceUpdate = data.updatedAtTimestamp ? daysSince(data.updatedAtTimestamp) : null;
-    const progress = caseProgress(data);
-    const isCompleted = progress !== 'In Progress';
-
-    const card = document.createElement('div');
+    const data = caseData.history?.at(-1)?.data;
+    if (!data) return;
+    const card = document.createElement('article');
     card.className = 'case-card';
-    card.innerHTML = `
-      <div class="case-card-header">
-        <div class="case-card-receipt">${data.receiptNumber}</div>
-        <div class="case-card-badges">
-          <span class="case-card-form">${escapeHTML(applicantIdentity(caseData).displayName)}</span>
-          <span class="case-card-form">${data.formType || 'N/A'}</span>
-        </div>
-      </div>
-      <div class="case-card-status">
-        ${isCompleted ?
-          `<span class="status-badge completed">✓ ${progress}</span>` :
-          '<span class="status-badge active">● In Progress</span>'
-        }
-      </div>
-      <div class="case-card-status">${data.caseStatus || 'No status available'}</div>
-      <div class="case-card-meta">
-        ${daysSinceSubmission !== null ? `
-          <div class="case-card-meta-item">
-            <span class="case-card-meta-label">Filed</span>
-            <span class="case-card-meta-value">${daysSinceSubmission}d ago</span>
-          </div>
-        ` : ''}
-        ${daysSinceUpdate !== null ? `
-          <div class="case-card-meta-item">
-            <span class="case-card-meta-label">Updated</span>
-            <span class="case-card-meta-value">${daysSinceUpdate}d ago</span>
-          </div>
-        ` : ''}
-        <div class="case-card-meta-item">
-          <span class="case-card-meta-label">Snapshots</span>
-          <span class="case-card-meta-value">${caseData.history.length}</span>
-        </div>
-      </div>
-    `;
-    summaryContainer.appendChild(card);
+    const progress = caseProgress(data);
+    card.innerHTML = '<div class="case-card-header"><div class="case-card-receipt">' + escapeHTML(data.receiptNumber) +
+      '</div><div class="case-card-badges"><span class="case-card-form">' + escapeHTML(applicantIdentity(caseData).displayName) +
+      '</span><span class="case-card-form">' + escapeHTML(data.formType || 'N/A') + '</span><span class="status-badge ' +
+      (progress === 'In Progress' ? 'active' : progress === 'Denied' ? 'denied' : 'completed') + '">' + escapeHTML(progress) + '</span></div></div>' +
+      expandedCaseDetails(data, caseData);
+    container.appendChild(card);
   });
 }
 
@@ -3216,7 +3519,7 @@ function renderTimeline(){
       const t=document.createElement("div");t.className="titem";
       // Extract event code if this is an event
       const eventMatch = it.label.match(/event ([A-Z0-9]+)/);
-      const eventCode = eventMatch ? eventMatch[1] : null;
+      const eventCode = it.eventRecord?.eventCode || (eventMatch ? eventMatch[1] : null);
 
       // Get insight if this is an event
       const insight = eventCode ? getEventInsight(eventCode, it.caseContext.data, null) : null;
@@ -3229,8 +3532,9 @@ function renderTimeline(){
       const formType = it.caseContext.data.formType;
       const formPrefix = `${formType} `;
       const eventLabel = (it.label.startsWith(formPrefix) ? it.label.slice(formPrefix.length) : it.label)
-        .replace('closed=true', 'Case completed ✨').replace('closed=false', '').trim();
+        .replace('closed=true', 'Case record closed').replace('closed=false', 'Case record open').trim();
 
+      const explanation = explainTimelineItem(it);
       t.innerHTML = `
         <div class="titem-content">
           <div>
@@ -3238,12 +3542,14 @@ function renderTimeline(){
             <div class="titem-main">
               <span class="timeline-pill">${escapeHTML(applicantIdentity(cases[it.caseContext.receiptNumber], aliases).displayName)}</span>
               <span class="timeline-pill">${escapeHTML(formType || 'N/A')}</span>
-              ${eventLabel ? `<span class="titem-label">${escapeHTML(eventLabel)}</span>` : ''}
-              ${businessHours ? '<span class="flag officer">👋 Officer</span>' : '<span class="flag system">⚙️ System</span>'}
-              ${isClosed ? '<span class="flag completed">🎉 Complete</span>' : ''}
+              <span class="titem-label">${escapeHTML(explanation.title)}</span>
+              ${eventCode ? '<span class="flag">' + escapeHTML(eventCode) + '</span>' : ''}
+              <span class="timeline-pill">${escapeHTML(explanation.category)}</span>
             </div>
-            ${insight ? `<div class="insight ${insight.type}">${insight.message}</div>` : ''}
-            ${isClosed ? `<div class="insight success">Congratulations! Your case has been completed.</div>` : ''}
+            <p class="event-explanation">${escapeHTML(explanation.description)}</p>
+            ${it.eventRecord ? '<details><summary>Event details · ' + escapeHTML(eventCode) + '</summary>' + recordDetails([it.eventRecord], '') + '</details>' : ''}
+            ${it.noticeRecord ? '<details open><summary>Notice details</summary>' + recordDetails([it.noticeRecord], '') + '</details>' : ''}
+
           </div>
           <button class="view-json" onclick="viewJSON('${encodeURIComponent(JSON.stringify({ caseContext: it.caseContext }))}')" aria-label="View JSON data">
             <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
