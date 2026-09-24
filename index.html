@@ -1836,7 +1836,7 @@
 <body itemscope itemtype="https://schema.org/WebApplication">
 <header>
   <h1 itemprop="name">USCIS Case Tracker</h1>
-  <div id="familyControls"><button id="openPersonTabs" disabled>↗ Open tabs</button><label for="familySelect" class="sr-only">Family member</label><select id="familySelect" aria-label="Family member"></select></div>
+  <div id="familyControls"><button type="button" id="downloadBackupBtn" onclick="downloadBackup()" title="Download all cases and saved history for every family member. Contains personal data; keep the file private.">↓ Download Backup</button><button id="openPersonTabs" disabled>↗ Open tabs</button><label for="familySelect" class="sr-only">Family member</label><select id="familySelect" aria-label="Family member"></select><span id="backupStatus" role="status" class="api-open-status"></span></div>
 </header>
 
 <main>
@@ -2103,7 +2103,35 @@ function saveReceipts(r){localStorage.setItem("receipts",JSON.stringify(r))}
 function loadCases(){return JSON.parse(localStorage.getItem("cases")||"{}")}
 function saveCases(c){localStorage.setItem("cases",JSON.stringify(c))}
 
-// Applicant labels are independent of case history and never included in exports.
+function downloadBackup() {
+  const status = document.getElementById('backupStatus');
+  let url;
+  let link;
+  try {
+    const keys = ['cases', 'receipts', 'applicantAliases', 'collapsedSections', 'selectedPerson', 'selectedCasesByPerson'];
+    const storage = {};
+    for (const key of keys) {
+      const value = localStorage.getItem(key);
+      if (value !== null) storage[key] = value;
+    }
+    const createdAt = new Date().toISOString();
+    const backup = {app: 'uscis-case-tracker', version: 1, createdAt, storage};
+    url = URL.createObjectURL(new Blob([JSON.stringify(backup, null, 2)], {type: 'application/json'}));
+    link = document.createElement('a');
+    link.href = url;
+    link.download = 'uscis-backup-' + createdAt.replace(/[:.]/g, '-') + '.json';
+    document.body.appendChild(link);
+    link.click();
+    status.textContent = 'Backup download started · All family members included. Keep this file private.';
+  } catch (error) {
+    status.textContent = 'Could not download backup. Please try again. Your saved data has not changed.';
+  } finally {
+    link?.remove();
+    if (url) setTimeout(() => URL.revokeObjectURL(url), 60000);
+  }
+}
+
+// Applicant labels are independent of case history and excluded from Reddit exports.
 function normalizeApplicantName(name) {
   return typeof name === 'string' ? name.trim().replace(/\s+/g, ' ').toUpperCase() : '';
 }
