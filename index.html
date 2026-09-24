@@ -2122,7 +2122,7 @@ function downloadBackup() {
     link.download = 'uscis-backup-' + createdAt.replace(/[:.]/g, '-') + '.json';
     document.body.appendChild(link);
     link.click();
-    status.textContent = 'Backup download started · All family members included. Keep this file private.';
+    status.textContent = '';
   } catch (error) {
     status.textContent = 'Could not download backup. Please try again. Your saved data has not changed.';
   } finally {
